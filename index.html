@@ -54,9 +54,18 @@
 
          // Chèn đoạn mã HTML vào thẻ "video-list-container" sau thẻ mở
          videoListContainer.insertAdjacentHTML('beforeend', htmlToInsert);
-         const findVideo = dataVideo[0].find(x => x.index == 1);
-         addVideo(findVideo.url, findVideo.title);
-         document.getElementById("listC1").classList.add("active");
+         const ssUrl = localStorage.getItem("urlActive");
+         const ssTitle = localStorage.getItem("titleActive");
+         const ssList = localStorage.getItem("listActive");
+         if (ssUrl && ssTitle && ssList) {
+            addVideo(ssUrl, ssTitle);
+            document.getElementById(ssList).classList.add("active");
+            removeClass = ssList
+         } else {
+            const findVideo = dataVideo[0].find(x => x.index == 1);
+            addVideo(findVideo.url, findVideo.title);
+            document.getElementById("listC1").classList.add("active");
+         }
 
       }
       logMovies();
@@ -67,6 +76,9 @@
          addVideo(findVideo.url, findVideo.title);
          document.getElementById(`listC${index2}`).classList.add("active")
          removeClass = `listC${index2}`;
+         localStorage.setItem("urlActive", findVideo.url);
+         localStorage.setItem("titleActive", findVideo.title);
+         localStorage.setItem("listActive", removeClass);
       }
       const addVideo = (url, title) => {
          document.querySelector("video-list-container")
